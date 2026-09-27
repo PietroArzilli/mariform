@@ -112,9 +112,9 @@
   // la riga sotto al titolo dice cosa e' successo davvero
   var nomePrimo = primo && primo.value === piuGiorni(OGGI, 1) ? 'domani' : 'il primo giorno libero';
   $('giorno-hint').textContent = prenotabile(OGGI)
-    ? 'Oggi è già selezionato. Se è un altro giorno, toccalo.'
+    ? 'Oggi è già selezionato. Se vuoi prenotare per un altro giorno ti basta cliccarlo.'
     : (chiuso(OGGI) ? 'Oggi siamo chiusi' : 'Per stasera gli orari sono finiti') +
-      ', quindi ti abbiamo messo ' + nomePrimo + '. Se è un altro giorno, toccalo.';
+      ', quindi ti abbiamo messo ' + nomePrimo + '. Se vuoi prenotare per un altro giorno ti basta cliccarlo.';
 
   function giornoScelto() {
     var r = form.querySelector('input[name="giorno"]:checked');

@@ -1,0 +1,170 @@
+/* =========================================================
+   Pubby × La Marì Pizzeria — prenotazione di un tavolo
+   Si appoggia a site.css: stessi token, stessi font, stessi bottoni.
+   Stesso impianto del form Forlì Fest (_docs/form-pubby.md).
+   Scelta attiva: bordo rosso, fondo rosso al 10%, testo che resta crema.
+   Il rosso pieno non ospita mai testo crema.
+   Anton solo su titolo, numeri 01/02, numeri dei giorni e delle persone.
+   ========================================================= */
+
+/* ---------- header della collab ---------- */
+.collab { display: flex; align-items: center; gap: 14px; padding-block: 16px; }
+.collab__x { font-weight: 800; font-size: 1.125rem; line-height: 1; color: var(--red); }
+.collab__name { font-weight: 800; font-size: 1rem; line-height: 1.1; }
+.collab .logo img { width: 92px; }
+@media (min-width: 560px) {
+  .collab { gap: 18px; }
+  .collab .logo img { width: 110px; }
+  .collab__name { font-size: 1.125rem; }
+}
+
+/* ---------- hero ---------- */
+.ff-hero { position: relative; overflow: hidden; padding-block: clamp(28px, 6vw, 64px) clamp(32px, 6vw, 56px); }
+.ff-hero .d1 { font-size: clamp(2.6rem, 12vw, 6rem); margin-block: 14px 18px; }
+.hero__inner { position: relative; z-index: 1; }
+
+/* ---------- form ---------- */
+.ff { padding-bottom: var(--pad-y); position: relative; z-index: 1; }
+.ff__form { max-width: 720px; }
+
+.ff__step { border: 0; padding-top: 38px; margin-top: 38px; border-top: 1px solid var(--cream-faint); min-width: 0; }
+.ff__step:first-of-type { margin-top: 0; }
+.ff__legend { display: flex; align-items: baseline; gap: 14px; padding: 0; float: left; width: 100%; }
+/* legend flottante: la riga del fieldset resta sopra il titolo invece di attraversarlo */
+.ff__legend + * { clear: both; }
+.ff__n { font-family: var(--display); font-size: 2rem; line-height: 1; color: var(--red); }
+.ff__t { font-size: clamp(1.25rem, 4.6vw, 1.5rem); font-weight: 800; line-height: 1.15; }
+.ff__hint { padding-top: 8px; font-size: 0.9375rem; color: var(--cream-soft); }
+
+/* sottogruppi dentro 01: giorno, orario, persone */
+.sub { border: 0; min-width: 0; margin-top: 26px; }
+.sub__label {
+  display: block; padding: 0; margin-bottom: 10px;
+  font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* input radio veri, nascosti ma raggiungibili da tastiera: il disegno e' sulla card */
+.pick { position: relative; display: block; cursor: pointer; }
+.pick input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pick__box {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 14px;
+  border: 1.5px solid var(--cream-faint);
+  background: var(--brown-soft);
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.pick:hover .pick__box { border-color: var(--cream-soft); }
+.pick input:focus-visible + .pick__box { outline: 3px solid var(--red); outline-offset: 3px; }
+.pick input:checked + .pick__box { border-color: var(--red); background: rgba(255, 59, 92, 0.1); }
+.pick input:disabled + .pick__box { opacity: 0.38; cursor: not-allowed; border-style: dashed; }
+.pick input:disabled + .pick__box:hover { border-color: var(--cream-faint); }
+
+/* giorni: 4 per riga su telefono, numero grande in Anton come le date del Forlì Fest */
+.days { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 560px) { .days { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+.day .pick__box { gap: 4px; padding: 12px 4px 10px; min-height: 96px; text-align: center; }
+.day__w { font-size: 0.6875rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream-soft); line-height: 1.2; }
+.day__n { font-family: var(--display); font-size: 2.25rem; line-height: 0.95; font-variant-numeric: tabular-nums; }
+.day__m { font-size: 0.8125rem; font-weight: 800; line-height: 1.1; color: var(--cream-soft); }
+.day input:checked + .pick__box .day__w { color: var(--red); }
+.day--other .day__n { font-family: var(--text); font-weight: 800; font-size: 1.5rem; line-height: 1; }
+.other-day { margin-top: 14px; max-width: 320px; }
+.other-day[hidden] { display: none; }
+
+/* orari: pulsanti, 3 per riga su telefono */
+.slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+@media (min-width: 560px) { .slots { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.slot .pick__box { min-height: 52px; font-weight: 800; font-size: 1.0625rem; font-variant-numeric: tabular-nums; }
+.slots__none { font-size: 0.9375rem; font-weight: 700; color: var(--cream-soft); }
+.slots__none[hidden] { display: none; }
+
+/* persone: contatore */
+.people { display: flex; align-items: center; gap: 18px; }
+.people__btn {
+  display: grid; place-items: center;
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 1.5px solid var(--cream-faint); background: var(--brown-soft);
+  font-size: 1.75rem; font-weight: 800; line-height: 1;
+  transition: border-color 0.18s ease;
+}
+.people__btn:hover { border-color: var(--cream-soft); }
+.people__btn:disabled { opacity: 0.38; cursor: not-allowed; }
+.people__n { min-width: 2ch; text-align: center; font-family: var(--display); font-size: 3.25rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.people__note { margin-top: 10px; font-size: 0.875rem; color: var(--cream-soft); }
+
+/* 02 — i dati */
+.fields { display: grid; gap: 16px; margin-top: 22px; }
+@media (min-width: 560px) {
+  .fields { grid-template-columns: 1fr 1fr; }
+  .field--wide { grid-column: 1 / -1; }
+}
+.field label { display: block; font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.field__opt { font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--cream-soft); }
+.field input, .field textarea {
+  width: 100%;
+  font: inherit; font-size: 1.0625rem; font-weight: 600; color: var(--cream);
+  background: var(--brown-deep);
+  border: 1.5px solid rgba(255, 236, 171, 0.28);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-height: 52px;
+  transition: border-color 0.18s ease;
+  -webkit-appearance: none; appearance: none;
+}
+.field textarea { resize: vertical; line-height: 1.45; }
+.field input[type='date'] { color-scheme: dark; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(255, 236, 171, 0.45); }
+.field input:hover, .field textarea:hover { border-color: var(--cream-soft); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--cream); box-shadow: 0 0 0 3px rgba(255, 59, 92, 0.55); }
+.field input[aria-invalid='true'] { border-color: var(--red); }
+.field__err { margin-top: 6px; font-size: 0.875rem; font-weight: 700; color: var(--red); }
+.field__err:empty { display: none; }
+.field__count { margin-top: 6px; font-size: 0.8125rem; color: var(--cream-soft); text-align: right; font-variant-numeric: tabular-nums; }
+
+.group-err { margin-top: 12px; font-size: 0.875rem; font-weight: 700; color: var(--red); }
+.group-err:empty { display: none; }
+
+/* consenso */
+.consent { display: flex; gap: 12px; align-items: flex-start; margin-top: 34px; font-size: 0.9375rem; color: var(--cream-soft); cursor: pointer; }
+.consent input { flex: none; width: 22px; height: 22px; margin-top: 1px; accent-color: var(--red); }
+.consent--opt { margin-top: 16px; }
+.consent em { font-style: normal; font-size: 0.875rem; opacity: 0.85; }
+
+.ff__info { margin-top: 14px; font-size: 0.8125rem; color: var(--cream-soft); }
+.ff__info summary { cursor: pointer; font-weight: 700; color: var(--cream); }
+.ff__info p { margin-top: 10px; max-width: 64ch; }
+.ff__info p + p { margin-top: 8px; }
+.ff__info a { color: var(--cream); }
+
+/* invio */
+.ff__send { margin-top: 28px; }
+.ff__send .btn { width: 100%; padding-block: 18px; font-size: 1.0625rem; }
+@media (min-width: 560px) { .ff__send .btn { width: auto; padding-inline: 36px; } }
+.ff__send .btn[disabled] { opacity: 0.6; cursor: progress; transform: none; }
+
+.ff__alert {
+  margin-top: 20px; padding: 16px 18px; border-radius: 14px;
+  border-left: 3px solid var(--red); background: rgba(255, 59, 92, 0.1);
+  font-weight: 700;
+}
+.ff__alert:empty { display: none; }
+
+/* conferma */
+.done { max-width: 720px; }
+.done[hidden] { display: none; }
+.done .d1 { font-size: clamp(2.6rem, 12vw, 6rem); margin-block: 14px 18px; }
+.done__when { display: block; margin-top: 6px; font-size: 0.5em; line-height: 1.05; }
+.done__card {
+  margin-top: 30px; padding: clamp(22px, 5vw, 32px);
+  border-radius: var(--radius-lg);
+  background: var(--red); color: var(--brown);
+  max-width: 440px;
+}
+.done__list { font-weight: 800; font-size: clamp(1.5rem, 6vw, 1.875rem); line-height: 1.1; }
+.done__card p { margin-top: 10px; font-weight: 700; }
+.done__card p + p { margin-top: 2px; }
+.done__card small { display: block; margin-top: 12px; font-size: 0.8125rem; font-weight: 700; opacity: 0.72; }
+
+/* footer ridotto */
+.ff-foot { padding-block: 32px; border-top: 1px solid var(--cream-faint); background: var(--brown-deep); font-size: 0.8125rem; color: var(--cream-soft); }
+.ff-foot a { color: inherit; }

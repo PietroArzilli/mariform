@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>La Marì Pizzeria × Pubby — prenota un tavolo</title>
+<meta name="description" content="Prenota un tavolo da La Marì Pizzeria: scegli giorno, orario e quanti siete, al resto pensiamo noi.">
+<!-- pagina interna: ci si arriva dal link in bio, non dai motori di ricerca -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#301c1b">
+
+<link rel="icon" href="assets/icons/pubby-icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icons/icon-180.png">
+
+<link rel="preload" href="assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/manrope-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/prenota.css">
+</head>
+
+<body>
+<a class="skip" href="#main">Vai al contenuto</a>
+
+<header class="header" id="header">
+  <div class="wrap collab">
+    <a class="logo" href="https://www.pubby.it/"><img src="assets/logo-cream.png" alt="Pubby" width="104" height="38"></a>
+    <span class="collab__x" aria-hidden="true">×</span>
+    <span class="collab__name">La Marì Pizzeria</span>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="ff-hero grain">
+    <div class="wrap hero__inner" id="intro">
+      <p class="eyebrow">La Marì Pizzeria · prenota un tavolo</p>
+      <h1 class="d1">Il tavolo<br>te lo teniamo<br><span class="acc">noi.</span></h1>
+      <p class="lead">Scegli quando vieni e quanti siete, lascia un nome e il forno lo accendiamo noi.</p>
+    </div>
+  </section>
+
+  <section class="ff">
+    <div class="wrap">
+
+      <!-- data-endpoint: dove finiscono le prenotazioni. Vuoto finche' non c'e'
+           l'accesso al backend Pubby (vedi _docs/form-pubby.md, parte 2):
+           senza endpoint il form non finge di salvare, tranne in locale o con ?demo -->
+      <form class="ff__form" id="pr-form" novalidate data-endpoint="">
+
+        <fieldset class="ff__step">
+          <legend class="ff__legend"><span class="ff__n">01</span><span class="ff__t">Quando venite</span></legend>
+          <p class="ff__hint">Oggi è già selezionato. Se è un altro giorno, toccalo.</p>
+
+          <fieldset class="sub" aria-describedby="err-giorno">
+            <legend class="sub__label">Giorno</legend>
+            <div class="days" id="days"></div>
+            <div class="field other-day" id="other-day" hidden>
+              <label for="altra-data">Scegli la data</label>
+              <input id="altra-data" name="altra-data" type="date" aria-describedby="err-giorno">
+            </div>
+            <p class="group-err" id="err-giorno" role="alert"></p>
+          </fieldset>
+
+          <fieldset class="sub" aria-describedby="err-ora">
+            <legend class="sub__label">Orario</legend>
+            <div class="slots" id="slots"></div>
+            <p class="slots__none" id="slots-none" hidden>Per oggi gli orari sono finiti. Prova domani.</p>
+            <p class="group-err" id="err-ora" role="alert"></p>
+          </fieldset>
+
+          <div class="sub">
+            <p class="sub__label" id="persone-label">Quanti siete</p>
+            <div class="people" role="group" aria-labelledby="persone-label">
+              <button class="people__btn" type="button" id="persone-meno" aria-label="Una persona in meno">−</button>
+              <output class="people__n" id="persone-out" for="persone" aria-live="polite">2</output>
+              <button class="people__btn" type="button" id="persone-piu" aria-label="Una persona in più">+</button>
+              <input type="hidden" name="persone" id="persone" value="2">
+            </div>
+            <p class="people__note" id="persone-note">Più di 12? Scrivici su Instagram, vi sistemiamo.</p>
+          </div>
+        </fieldset>
+
+        <fieldset class="ff__step">
+          <legend class="ff__legend"><span class="ff__n">02</span><span class="ff__t">Chi prenota</span></legend>
+          <p class="ff__hint">Il nome lo diciamo al cameriere, il telefono serve se c'è un imprevisto.</p>
+          <div class="fields">
+            <div class="field field--wide">
+              <label for="nome">A nome di</label>
+              <input id="nome" name="nome" type="text" autocomplete="name" autocapitalize="words" required maxlength="80" aria-describedby="err-nome">
+              <p class="field__err" id="err-nome"></p>
+            </div>
+            <div class="field">
+              <label for="telefono">Telefono</label>
+              <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" aria-describedby="err-telefono">
+              <p class="field__err" id="err-telefono"></p>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" required maxlength="120" aria-describedby="err-email">
+              <p class="field__err" id="err-email"></p>
+            </div>
+            <div class="field field--wide">
+              <label for="note">Note <span class="field__opt">facoltative</span></label>
+              <textarea id="note" name="note" rows="3" maxlength="300" placeholder="Allergie, seggiolone, compleanno…" aria-describedby="note-count"></textarea>
+              <p class="field__count" id="note-count">0 / 300</p>
+            </div>
+          </div>
+          <!-- trappola per i bot: invisibile alle persone, se e' piena l'invio si ferma -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px">
+            <label for="sito">Lascia vuoto</label>
+            <input id="sito" name="sito" type="text" tabindex="-1" autocomplete="off">
+          </div>
+        </fieldset>
+
+        <label class="consent">
+          <input type="checkbox" name="consenso" id="consenso" required aria-describedby="err-consenso">
+          <span>Ho letto come trattate i miei dati (qui sotto) e vi autorizzo a usarli per gestire la prenotazione.</span>
+        </label>
+        <p class="group-err" id="err-consenso" role="alert"></p>
+
+        <!-- consenso al marketing: separato, facoltativo, MAI preselezionato (art. 7 GDPR, Planet49) -->
+        <label class="consent consent--opt">
+          <input type="checkbox" name="marketing" id="marketing">
+          <span>Tenetemi aggiornato sulle novità della Marì e di Pubby: potete scrivermi via email, SMS o WhatsApp. <em>Facoltativo, e puoi dire basta quando vuoi.</em></span>
+        </label>
+
+        <!-- TODO prima di pubblicare: tempi di conservazione e ruoli da confermare
+             col consulente, e da aggiungere a privacy.html (nuova sezione prenotazioni) -->
+        <details class="ff__info">
+          <summary>Come usiamo i tuoi dati</summary>
+          <p>Li tratta Pubby S.r.l. (Via Gioacchino Rossini 10, Dogana, San Marino). Nome, telefono, email e note servono a tenerti il tavolo e ad avvisarti se c'è un imprevisto: per questo li vede anche La Marì Pizzeria, e li cancelliamo entro 30 giorni dalla data prenotata.</p>
+          <p>Se spunti anche la seconda casella, li teniamo per scriverti delle novità finché non ci dici di smettere, e comunque non oltre 24 mesi. Senza quella casella non ti scriviamo.</p>
+          <p>Per qualsiasi richiesta: <a href="mailto:p.arzilli@pubby.sm">p.arzilli@pubby.sm</a>. Tutti i dettagli in <a href="https://www.pubby.it/privacy.html">Privacy e cookie</a>.</p>
+        </details>
+
+        <div class="ff__send">
+          <button class="btn btn--red" type="submit" id="pr-submit">Prenota il tavolo</button>
+        </div>
+        <p class="ff__alert" id="pr-alert" role="alert"></p>
+      </form>
+
+      <div class="done" id="pr-done" hidden tabindex="-1">
+        <p class="eyebrow">La Marì Pizzeria</p>
+        <h2 class="d1 d--acc">Ci sei. <span class="acc done__when" id="done-when">Ti aspettiamo oggi alle 21:00.</span></h2>
+        <p class="lead">Il tavolo è a tuo nome. Se cambia qualcosa, avvisa il locale.</p>
+        <div class="done__card">
+          <div class="done__list" id="done-table">Tavolo per 2</div>
+          <p id="done-date">Domenica 27 settembre · 21:00</p>
+          <p id="done-name">Mario Rossi</p>
+          <small>Fai uno screenshot, non si sa mai.</small>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="ff-foot">
+  <div class="wrap">
+    <strong>Pubby S.r.l.</strong> · COE SM31894 · <a href="https://www.pubby.it/privacy.html">Privacy</a> · <a href="https://www.pubby.it/note-legali.html">Note legali</a>
+  </div>
+</footer>
+
+<script src="assets/js/prenota.js" defer></script>
+</body>
+</html>

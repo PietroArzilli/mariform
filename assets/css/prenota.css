@@ -168,3 +168,7 @@
 /* footer ridotto */
 .ff-foot { padding-block: 32px; border-top: 1px solid var(--cream-faint); background: var(--brown-deep); font-size: 0.8125rem; color: var(--cream-soft); }
 .ff-foot a { color: inherit; }
+
+/* il nome del locale porta al suo sito */
+a.collab__name { text-decoration: none; transition: opacity 0.2s ease; }
+a.collab__name:hover { opacity: 0.8; }

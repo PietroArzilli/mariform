@@ -169,6 +169,29 @@
     $('note-count').textContent = note.value.length + ' / 300';
   });
 
+  // ---------- tastiera ----------
+  // Safari su iPhone non chiude la tastiera se tocchi fuori dal campo:
+  // la chiudiamo noi quando il tocco non cade su un altro controllo
+  function scrive(el) {
+    return el && (el.tagName === 'TEXTAREA' ||
+      (el.tagName === 'INPUT' && /^(text|tel|email|date|search|number)$/.test(el.type)));
+  }
+  document.addEventListener('pointerdown', function (e) {
+    if (!scrive(document.activeElement)) { return; }
+    if (e.target.closest('input, textarea, select, button, a, label')) { return; }
+    document.activeElement.blur();
+  });
+
+  // "Avanti" sulla tastiera passa al campo dopo invece di inviare il form
+  var ordine = ['nome', 'telefono', 'email', 'note'];
+  form.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.target.tagName !== 'INPUT') { return; }
+    var i = ordine.indexOf(e.target.id);
+    if (i === -1) { return; }
+    e.preventDefault();
+    $(ordine[i + 1]).focus();
+  });
+
   // ---------- invio ----------
   function setErr(id, msg) {
     var el = $('err-' + id);
